@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explain Like I'm 5 - Mario Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #050a14;
+        background-image: 
+          radial-gradient(#1e293b 1px, transparent 1px),
+          radial-gradient(#1e293b 1px, transparent 1px);
+        background-size: 40px 40px;
+        background-position: 0 0, 20px 20px;
+        color: #f1f5f9;
+      }
+      .mario-font {
+        font-family: 'Press Start 2P', cursive;
+      }
+      .pixel-border {
+        box-shadow: 
+          0 -4px 0 0 #000,
+          0 4px 0 0 #000,
+          -4px 0 0 0 #000,
+          4px 0 0 0 #000;
+      }
+      .brick-pattern {
+        background-color: #e52521;
+        background-image: linear-gradient(315deg, #b31d1a 25%, transparent 25%), 
+                          linear-gradient(45deg, #b31d1a 25%, transparent 25%), 
+                          linear-gradient(225deg, #b31d1a 25%, transparent 25%), 
+                          linear-gradient(135deg, #b31d1a 25%, transparent 25%);
+        background-position:  10px 0, 10px 0, 0 0, 0 0;
+        background-size: 20px 20px;
+        background-repeat: repeat;
+      }
+      .coin-spin {
+        animation: spin 1s steps(8) infinite;
+      }
+      @keyframes spin {
+        from { transform: rotateY(0deg); }
+        to { transform: rotateY(360deg); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
