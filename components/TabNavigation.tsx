@@ -12,6 +12,7 @@ const TabNavigation: React.FC<Props> = ({ activeTab, onTabChange }) => {
     ContentTab.EXPLANATION,
     ContentTab.RESOURCES,
     ContentTab.PREREQUISITES,
+    ContentTab.QUIZ,
     ContentTab.OVERVIEW
   ];
 

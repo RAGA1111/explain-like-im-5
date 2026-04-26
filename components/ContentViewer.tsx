@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContentTab, LearningLevel, LevelContent } from '../types';
 
 interface Props {
@@ -11,6 +11,12 @@ interface Props {
 }
 
 const ContentViewer: React.FC<Props> = ({ tab, level, data, visual, isLoadingVisual }) => {
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+
+  useEffect(() => {
+    setAnswers({});
+  }, [level, data?.explanation]);
+
   if (!data && tab !== ContentTab.OVERVIEW) return null;
 
   const levelColor = level === LearningLevel.BEGINNER ? 'text-red-500' : level === LearningLevel.INTERMEDIATE ? 'text-green-500' : 'text-yellow-400';
@@ -87,6 +93,66 @@ const ContentViewer: React.FC<Props> = ({ tab, level, data, visual, isLoadingVis
           ))}
         </div>
       );
+
+    case ContentTab.QUIZ: {
+      const quiz = data?.quiz ?? [];
+      const totalAnswered = Object.keys(answers).length;
+      const score = quiz.reduce((acc, q, idx) => {
+        return acc + (answers[idx] === q.answerIndex ? 1 : 0);
+      }, 0);
+
+      if (!quiz.length) {
+        return (
+          <div className="text-center text-slate-400 space-y-2">
+            <p>Quiz did not generate this time.</p>
+            <p className="text-sm text-slate-500">Try regenerating the topic or switching the difficulty level.</p>
+          </div>
+        );
+      }
+
+      return (
+        <div className="space-y-8">
+          <div className="p-4 rounded-xl bg-blue-500/10 border-4 border-black shadow-[4px_4px_0px_rgba(30,64,175,0.3)]">
+            <p className="text-slate-200 text-sm">
+              Score: <span className="text-blue-400 font-bold">{score}</span> / {quiz.length} | Answered: {totalAnswered}
+            </p>
+          </div>
+          {quiz.map((question, idx) => {
+            const selected = answers[idx];
+            const isCorrect = selected === question.answerIndex;
+            const showFeedback = typeof selected === "number";
+            return (
+              <div key={idx} className="p-5 rounded-xl bg-slate-900 border-4 border-black shadow-[6px_6px_0px_#000]">
+                <p className="text-slate-100 font-semibold mb-4">
+                  Q{idx + 1}. {question.question}
+                </p>
+                <div className="grid gap-3">
+                  {question.options.map((option, optionIndex) => (
+                    <button
+                      key={optionIndex}
+                      onClick={() => setAnswers((prev) => ({ ...prev, [idx]: optionIndex }))}
+                      className={`text-left px-4 py-3 rounded-lg border-2 transition-colors ${
+                        selected === optionIndex
+                          ? "bg-blue-900/40 border-blue-400 text-blue-100"
+                          : "bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+                {showFeedback ? (
+                  <div className={`mt-4 p-3 rounded-lg border ${isCorrect ? "bg-green-900/20 border-green-600/50 text-green-300" : "bg-red-900/20 border-red-600/50 text-red-300"}`}>
+                    {isCorrect ? "Correct! " : "Not quite. "}
+                    <span className="text-slate-200">{question.explanation}</span>
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
 
     case ContentTab.OVERVIEW:
       return (

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: explain-like-im-5
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_AI_PROVIDER
+        value: gemini
+      - key: VITE_GEMINI_API_KEY
+        sync: false
+      - key: VITE_GROQ_API_KEY
+        sync: false

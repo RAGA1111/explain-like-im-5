@@ -9,6 +9,7 @@ export enum ContentTab {
   EXPLANATION = 'Explanation',
   RESOURCES = 'Resources',
   PREREQUISITES = 'Prerequisites',
+  QUIZ = 'Quiz',
   OVERVIEW = 'Overview'
 }
 
@@ -23,6 +24,13 @@ export interface PrerequisitesGroup {
   items: string[];
 }
 
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  answerIndex: number;
+  explanation: string;
+}
+
 export interface LevelContent {
   explanation: string;
   resources: {
@@ -32,10 +40,16 @@ export interface LevelContent {
     challenges: ResourceItem[];
   };
   prerequisites: PrerequisitesGroup[];
+  quiz: QuizQuestion[];
 }
 
 export interface TopicData {
   topic: string;
   levels: Record<LearningLevel, LevelContent | null>;
   visuals: Record<LearningLevel, string | null>;
+}
+
+export enum AIProvider {
+  GEMINI = 'gemini',
+  GROQ = 'groq',
 }
